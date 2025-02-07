@@ -15,7 +15,16 @@ public class Main{
     *  @param str String to insert
     */
     public static ArrayList<String> insertAfterI(ArrayList<String> stringList, String str){
-       return new ArrayList<String>();
+        ArrayList<String> after = stringList;
+        for(int i = 0; i < after.size(); i ++) {
+            for(int j = 0; j < after.get(i).length(); j ++) {
+                if(after.get(i).substring(j, j + 1).equals("i")) {
+                    after.add(i + 1, str);
+                    i ++;
+                }
+            }
+        }
+       return after;
     }
 
 
@@ -28,6 +37,12 @@ public class Main{
    *  @param stringList  original arraylist of Strings
    */
     public static ArrayList<String> removeThree(ArrayList<String> stringList){
+        for(int i = 0; i < stringList.size(); i ++) {
+            if(stringList.get(i).length() == 3) {
+                stringList.remove(i);
+                i --;
+            }
+        }
         return stringList;
     }
 
@@ -41,7 +56,11 @@ public class Main{
    *  @param intList  original array of integers
    */
     public static ArrayList<Integer> reverseArray(int[] intList){
-        return new ArrayList<Integer>();
+        ArrayList<Integer> reversed = new ArrayList<Integer>();
+        for(int i = intList.length - 1; i >= 0; i --) {
+            reversed.add(intList[i]);
+        }
+        return reversed;
     }
 
 
@@ -59,6 +78,10 @@ public class Main{
      *  @param wordList  arraylist of Strings
      */
     public static ArrayList<String> duplicateUpperEnd(ArrayList<String> wordList){
+        int currentLength = wordList.size();
+        for(int i = 0; i < currentLength; i ++) {
+            wordList.add(wordList.get(i).toUpperCase());
+        }
         return wordList;
     }
 
@@ -78,7 +101,13 @@ public class Main{
    */
 
     public static ArrayList<String> parseSentence(String sentence){
-        return new ArrayList<String>();
+        ArrayList<String> parsed = new ArrayList<String>();
+        while(sentence.indexOf(" ") >= 0) {
+            parsed.add(sentence.substring(0, sentence.indexOf(" ")));
+            sentence = sentence.substring(sentence.indexOf(" ") + 1);
+        }
+        parsed.add(sentence);
+        return parsed;
     }
 
 
@@ -99,6 +128,13 @@ public class Main{
    *  @param wordList  arraylist of words
    */
     public static ArrayList<String> moveBWords(ArrayList<String> wordList){
+        int indexB = 0;
+        for(int i = 0; i < wordList.size(); i ++) {
+            if(wordList.get(i).substring(0,  1).equalsIgnoreCase("b")) {
+                wordList.add(indexB, wordList.remove(i));
+                indexB ++;
+            }
+        }
         return wordList;
     }
 
@@ -114,6 +150,14 @@ public class Main{
      *  @param intList  intList of Integers
      */
     public static ArrayList<Integer> removeDuplicates(ArrayList<Integer> intList){
+        for(int i = 0; i < intList.size(); i ++) {
+            for(int j = i + 1; j < intList.size(); j ++) {
+                if(intList.get(i) == intList.get(j)) {
+                    intList.remove(j);
+                    j --;
+                }
+            }
+        }
         return intList;
     }
 
@@ -125,6 +169,9 @@ public class Main{
     // sameFirstLast([1, 2, 1]) → true
     //sameFirstLast([]) -> false
     public static boolean sameFirstLast(ArrayList<Integer> list){
+        if(list.size() > 0 && list.get(0) == list.get(list.size() - 1)) {
+            return true;
+        }
         return false;
     }
 
@@ -136,7 +183,10 @@ public class Main{
     // swapEnds([1, 2, 3]) → [3, 2, 1]
     // swapEnds([8, 6, 7, 9, 5]) → [5, 6, 7, 9, 8]
     // swapEnds([]->[])
-    public static ArrayList<Integer> swapEnds(ArrayList<Integer> list){        
+    public static ArrayList<Integer> swapEnds(ArrayList<Integer> list){    
+        if(list.size() > 0) {
+            list.add(list.set(0, list.remove(list.size() - 1)));
+        }    
         return list;
     }
 
@@ -150,6 +200,11 @@ public class Main{
     // zeroFront([0, 1, 1, 0, 1]) → [0, 0, 1, 1, 1]
     // zeroFront([1, 0]) → [0, 1]
     public static ArrayList<Integer> zeroFront(ArrayList<Integer> list){
+        for(int i = 0; i < list.size();i ++) {
+            if(list.get(i) == 0) {
+                list.add(0, list.remove(i));
+            }
+        }
         return list;
     }
 
@@ -163,6 +218,32 @@ public class Main{
     // notAlone([1, 2, 3, 2, 5, 2], 2) → [1, 3, 3, 5, 5, 5]
     // notAlone([3, 4], 3) → [3, 3]
     public static ArrayList<Integer> notAlone(ArrayList<Integer> list, int val){
+        for(int i = 0 ; i < list.size(); i ++) {
+            if(list.get(i) == val) {
+                if(i == 0 && list.get(i) != list.get(i + 1)) {
+                    if(list.get(i) < list.get(i + 1)) {
+                        list.set(i, list.get(i + 1));
+                    }
+
+                }
+                else if(i == list.size() - 1 && list.get(i) != list.get(i - 1)) {
+                    if(list.get(i) < list.get(i - 1)) {
+                        list.set(i, list.get(i - 1));
+                    }
+
+                }
+                else if(!(list.get(i) == list.get(i - 1) || list.get(i) == list.get(i + 1))) {
+                    if(list.get(i - 1) >= list.get(i + 1)) {
+                        list.set(i, list.get(i - 1));
+
+                    }
+                    else {
+                        list.set(i, list.get(i + 1));
+                    }
+
+                }
+            }
+        }
         return list;
     }
 
@@ -175,6 +256,7 @@ public class Main{
     // shiftLeft([1]) → [1]
 
     public static ArrayList<Integer> shiftLeft(ArrayList<Integer> list){
+        list.add(list.remove(0));
         return list;
     }
     
@@ -189,6 +271,20 @@ public class Main{
     // fix34([3, 2, 2, 4]) → [3, 4, 2, 2]
 
     public static ArrayList<Integer> fix34(ArrayList<Integer> list){
+        int index4 = -1;
+        for(int i = 0; i < list.size(); i ++) {
+            if(list.get(i) == 3) {
+                for(int j = index4 + 1; j < list.size();j ++) {
+                    if(list.get(j) == 4) {
+                        int temp = list.get(i + 1);
+                        list.set(i + 1, 4);
+                        list.set(j, temp);  
+                        index4 = j;  
+                        break;  
+                    }
+                }
+            }
+        }
         return list;
     }
 
@@ -219,6 +315,44 @@ public class Main{
    *  @param numList  numList of ints
    */
     public static ArrayList<Integer> modes(int[] numList){
-        return new ArrayList<Integer>();
+        int greatest = 1;
+        ArrayList<Integer> mode = new ArrayList<Integer>();
+        for(int i = 0; i < numList.length; i ++) {
+            int repeats = 1;
+            for(int j = i + 1; j < numList.length; j ++) {
+                if(numList[i] == numList[j]) {
+                    repeats ++;
+                }
+            }
+            if(repeats > greatest) {
+                mode = new ArrayList<Integer>();
+                mode.add(numList[i]);
+                greatest = repeats;
+            }
+            else if(repeats == greatest && greatest > 1) {
+                mode.add(numList[i]);
+            }
+
+        }
+
+        if(greatest == 1 || mode.size() * greatest == numList.length) {
+            mode = new ArrayList<>();
+        }
+        
+        return mode;
+    }
+
+    public static void main(String[] args) {
+        // ArrayList<String> stringList = new ArrayList<String>(Arrays.asList("apple", "boy", "fox", "bi", "night"));
+        // System.out.println(moveBWords(stringList));
+
+        // int[] sumnums = {1,2,3,4,5,6};
+        // System.out.println(reverseArray(sumnums));
+
+        // String sentence = "I have no idea what I am saying? Yet it should work";
+        // System.out.println(parseSentence(sentence));
+
+        ArrayList<Integer> nums = new ArrayList<Integer>(Arrays.asList(0, 1, 1, 2, 3, 0, 5, 7, 0));
+        System.out.println(notAlone(nums, 2));
     }
 }
